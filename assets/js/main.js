@@ -155,20 +155,21 @@
 
   /* ---------- hero video ---------- */
   const heroVideo = document.getElementById('heroVideo');
+  const heroVideoBg = document.getElementById('heroVideoBg');
   const heroPlay = document.getElementById('heroPlay');
-  heroPlay.addEventListener('click', ()=>{
-    if(heroVideo.paused){ heroVideo.play(); heroPlay.classList.add('hidden'); }
-  });
-  heroVideo.addEventListener('click', ()=>{
-    if(!heroVideo.paused){ heroVideo.pause(); heroPlay.classList.remove('hidden'); }
-  });
+  function syncBg(){ if(!heroVideoBg) return; try{ heroVideoBg.currentTime = heroVideo.currentTime; }catch(e){} }
+  function playHero(){ heroVideo.play().then(()=>{ heroPlay.classList.add('hidden'); if(heroVideoBg){ syncBg(); heroVideoBg.play().catch(()=>{}); } }).catch(()=>{}); }
+  function pauseHero(){ heroVideo.pause(); if(heroVideoBg) heroVideoBg.pause(); heroPlay.classList.remove('hidden'); }
+  heroPlay.addEventListener('click', ()=>{ if(heroVideo.paused) playHero(); });
+  heroVideo.addEventListener('click', ()=>{ if(!heroVideo.paused) pauseHero(); });
+  // keep the blurred backdrop aligned with the foreground video
+  heroVideo.addEventListener('play', ()=>{ if(heroVideoBg){ syncBg(); heroVideoBg.play().catch(()=>{}); } });
+  heroVideo.addEventListener('pause', ()=>{ if(heroVideoBg) heroVideoBg.pause(); });
+  heroVideo.addEventListener('seeked', syncBg);
   // autoplay muted when in view
   if('IntersectionObserver' in window){
     new IntersectionObserver((ents)=>{
-      ents.forEach(en=>{
-        if(en.isIntersecting){ heroVideo.play().then(()=>heroPlay.classList.add('hidden')).catch(()=>{}); }
-        else heroVideo.pause();
-      });
+      ents.forEach(en=>{ if(en.isIntersecting) playHero(); else pauseHero(); });
     },{threshold:.4}).observe(heroVideo);
   }
 
