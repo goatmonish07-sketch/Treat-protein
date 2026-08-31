@@ -92,6 +92,21 @@
 
 <!-- ===== Hero ===== -->
 <section class="hero" id="home">
+  <div class="hero__bg">
+    <video id="heroVideo" class="hero__video" poster="assets/media/30for30.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+      <source src="assets/media/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__scrim"></div>
+    <button class="hero__mute" id="heroMute" aria-label="Unmute video" aria-pressed="false">
+      <svg class="hero__mute-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><line x1="17" y1="9" x2="22" y2="14"/><line x1="22" y1="9" x2="17" y2="14"/></svg>
+      <svg class="hero__mute-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 7a7 7 0 0 1 0 10"/></svg>
+    </button>
+    <div class="hero__badge">
+      <svg viewBox="0 0 120 120" class="hero__badge-ring"><defs><path id="circlePath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#circlePath">MADE WITH LOVE • CLEAN INGREDIENTS • </textPath></text></svg>
+      <span class="hero__badge-core">♡</span>
+    </div>
+  </div>
+
   <div class="container hero__grid">
     <div class="hero__copy reveal">
       <p class="hero__eyebrow">WHOLESOME HOMEMADE</p>
@@ -103,25 +118,6 @@
         <a href="#shop" class="btn btn--solid">Shop Now <span class="btn__arrow">➜</span></a>
         <button class="btn btn--ghost" id="watchStory">Watch Our Story <span class="tri">▶</span></button>
       </div>
-    </div>
-
-    <div class="hero__media reveal">
-      <div class="hero__video-wrap">
-        <video id="heroVideo" class="hero__video" poster="assets/media/30for30.jpg" muted loop playsinline preload="metadata">
-          <source src="assets/media/hero.mp4" type="video/mp4" />
-        </video>
-        <button class="hero__play" id="heroPlay" aria-label="Play video">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <div class="hero__badge">
-          <svg viewBox="0 0 120 120" class="hero__badge-ring"><defs><path id="circlePath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#circlePath">MADE WITH LOVE • CLEAN INGREDIENTS • </textPath></text></svg>
-          <span class="hero__badge-core">♡</span>
-        </div>
-      </div>
-      <span class="float float--1" aria-hidden="true">🌰</span>
-      <span class="float float--2" aria-hidden="true">🥜</span>
-      <span class="float float--3" aria-hidden="true">🌱</span>
-      <span class="float float--4" aria-hidden="true">🍯</span>
     </div>
   </div>
 

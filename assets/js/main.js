@@ -153,24 +153,33 @@
     toastT = setTimeout(()=>toast.classList.remove('show'), 2600);
   }
 
-  /* ---------- hero video ---------- */
+  /* ---------- hero background video ---------- */
   const heroVideo = document.getElementById('heroVideo');
-  const heroVideoBg = document.getElementById('heroVideoBg');
-  const heroPlay = document.getElementById('heroPlay');
-  function syncBg(){ if(!heroVideoBg) return; try{ heroVideoBg.currentTime = heroVideo.currentTime; }catch(e){} }
-  function playHero(){ heroVideo.play().then(()=>{ heroPlay.classList.add('hidden'); if(heroVideoBg){ syncBg(); heroVideoBg.play().catch(()=>{}); } }).catch(()=>{}); }
-  function pauseHero(){ heroVideo.pause(); if(heroVideoBg) heroVideoBg.pause(); heroPlay.classList.remove('hidden'); }
-  heroPlay.addEventListener('click', ()=>{ if(heroVideo.paused) playHero(); });
-  heroVideo.addEventListener('click', ()=>{ if(!heroVideo.paused) pauseHero(); });
-  // keep the blurred backdrop aligned with the foreground video
-  heroVideo.addEventListener('play', ()=>{ if(heroVideoBg){ syncBg(); heroVideoBg.play().catch(()=>{}); } });
-  heroVideo.addEventListener('pause', ()=>{ if(heroVideoBg) heroVideoBg.pause(); });
-  heroVideo.addEventListener('seeked', syncBg);
-  // autoplay muted when in view
-  if('IntersectionObserver' in window){
-    new IntersectionObserver((ents)=>{
-      ents.forEach(en=>{ if(en.isIntersecting) playHero(); else pauseHero(); });
-    },{threshold:.4}).observe(heroVideo);
+  const heroMute = document.getElementById('heroMute');
+  if(heroVideo){
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // autoplay muted only while the hero is on screen (and only if motion is OK)
+    if(!reduce){
+      if('IntersectionObserver' in window){
+        new IntersectionObserver((ents)=>{
+          ents.forEach(en=>{ if(en.isIntersecting) heroVideo.play().catch(()=>{}); else heroVideo.pause(); });
+        },{threshold:.15}).observe(heroVideo);
+      } else { heroVideo.play().catch(()=>{}); }
+    } else { heroVideo.pause(); }
+    // mute / unmute toggle
+    if(heroMute){
+      const iconOn = heroMute.querySelector('.hero__mute-on');   // muted (speaker-off)
+      const iconOff = heroMute.querySelector('.hero__mute-off'); // sound on
+      heroMute.addEventListener('click', ()=>{
+        heroVideo.muted = !heroVideo.muted;
+        const muted = heroVideo.muted;
+        heroMute.setAttribute('aria-pressed', (!muted).toString());
+        heroMute.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
+        if(iconOn) iconOn.hidden = !muted;
+        if(iconOff) iconOff.hidden = muted;
+        if(!muted) heroVideo.play().catch(()=>{});
+      });
+    }
   }
 
   /* ---------- story lightbox ---------- */
