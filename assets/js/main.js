@@ -2,66 +2,14 @@
 (function () {
   'use strict';
 
-  /* ---------- SVG product illustrations (brand-styled, crisp at any size) ---------- */
-  function ballsSVG(seed) {
-    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="#f6ecd9"/>
-      <ellipse cx="100" cy="150" rx="78" ry="22" fill="#efe0c4"/>
-      ${protBall(70,120,34)}${protBall(128,116,32)}${protBall(100,88,30)}
-    </svg>`;
-  }
-  function barSVG() {
-    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="#f6ecd9"/>
-      <ellipse cx="100" cy="150" rx="80" ry="20" fill="#efe0c4"/>
-      <g transform="rotate(-8 100 105)">
-      <rect x="34" y="78" width="132" height="54" rx="12" fill="#5a3a1e"/>
-      <rect x="34" y="78" width="132" height="54" rx="12" fill="url(#tex)"/>
-      ${seeds(44,90,120,26)}
-      </g>${texDef()}
-    </svg>`;
-  }
-  function bitesSVG() {
-    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="#f6ecd9"/>
-      <ellipse cx="100" cy="150" rx="78" ry="22" fill="#efe0c4"/>
-      ${bite(64,104)}${bite(120,100)}${bite(92,128)}
-    </svg>`;
-  }
-  function comboSVG() {
-    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="#f6ecd9"/>
-      <path d="M46 110 a54 40 0 0 0 108 0 z" fill="#e8d6b4"/>
-      <ellipse cx="100" cy="110" rx="54" ry="16" fill="#f2e6cd"/>
-      ${nut(72,100,'#c98b46')}${nut(100,96,'#8a5a2a')}${nut(126,102,'#d9a05a')}
-      ${nut(84,108,'#6f9b4b')}${nut(114,110,'#b5702e')}${protBall(100,112,12)}
-    </svg>`;
-  }
-  function challengeSVG() {
-    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <rect width="200" height="200" fill="#f6ecd9"/>
-      <ellipse cx="100" cy="152" rx="82" ry="22" fill="#efe0c4"/>
-      ${protBall(66,118,30)}${protBall(120,120,28)}${protBall(94,94,30)}${protBall(140,96,20)}
-    </svg>`;
-  }
-  function texDef(){return `<defs><pattern id="tex" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.2" fill="#3d2413"/><circle cx="10" cy="9" r="1.8" fill="#7a4a1f"/><circle cx="7" cy="12" r="1.5" fill="#a9701f"/></pattern></defs>`;}
-  function protBall(x,y,r){
-    let s=`<circle cx="${x}" cy="${y}" r="${r}" fill="#4a2e17"/><circle cx="${x}" cy="${y}" r="${r}" fill="#3d2413" opacity=".2"/>`;
-    for(let i=0;i<16;i++){const a=Math.random()*6.28,d=Math.random()*r*0.85;const px=x+Math.cos(a)*d,py=y+Math.sin(a)*d;const c=['#c88a2e','#e0b063','#8a5a2a','#6f9b4b','#d9d2c0'][i%5];s+=`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(1.4+Math.random()*1.6).toFixed(1)}" fill="${c}"/>`;}
-    s+=`<ellipse cx="${x-r*0.3}" cy="${y-r*0.35}" rx="${r*0.35}" ry="${r*0.2}" fill="#fff" opacity=".08"/>`;
-    return s;
-  }
-  function seeds(x,y,w,h){let s='';for(let i=0;i<26;i++){const px=x+Math.random()*w,py=y+Math.random()*h;const c=['#c88a2e','#e0b063','#6f9b4b','#d9d2c0','#8a5a2a'][i%5];s+=`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(1.3+Math.random()*1.4).toFixed(1)}" fill="${c}"/>`;}return s;}
-  function bite(x,y){return `<g transform="rotate(-6 ${x} ${y})"><rect x="${x-24}" y="${y-20}" width="48" height="40" rx="9" fill="#4a2e17"/>${seeds(x-20,y-16,40,32)}</g>`;}
-  function nut(x,y,c){return `<ellipse cx="${x}" cy="${y}" rx="7" ry="9" fill="${c}"/><ellipse cx="${x-1.5}" cy="${y-2}" rx="2.5" ry="3.5" fill="#fff" opacity=".18"/>`;}
-
-  /* ---------- data ---------- */
+  /* ---------- data (real brand product photos) ---------- */
+  const IMG = 'assets/media/products/';
   const products = [
-    {id:'balls', name:'Protein Balls', meta:'25 GMS (Pack of 10)', price:40, rating:'★★★★★', reviews:245, svg:ballsSVG, cta:'Add to Cart'},
-    {id:'bar', name:'Protein Bar', meta:'60 GMS (Pack of 5)', price:89, rating:'★★★★½', reviews:182, svg:barSVG, cta:'Add to Cart'},
-    {id:'bites', name:'Protein Bites', meta:'30 GMS (Pack of 10)', price:45, rating:'★★★★★', reviews:210, svg:bitesSVG, cta:'Add to Cart'},
-    {id:'30for30', name:'30 for 30 Days', meta:'Protein Balls Challenge', price:950, rating:'★★★★★', reviews:375, svg:challengeSVG, tag:'BEST SELLER', cta:'View Details'},
-    {id:'combo', name:'Custom Combo', meta:'Build Your Box', price:199, priceLabel:'From ₹199', rating:'★★★★½', reviews:96, svg:comboSVG, cta:'Choose Now'},
+    {id:'balls',   name:'Protein Balls',  meta:'25 GMS (Pack of 10)',      price:40,  rating:'★★★★★', reviews:245, img:IMG+'balls.jpg',   cta:'Add to Cart'},
+    {id:'bar',     name:'Protein Bar',    meta:'60 GMS (Pack of 5)',       price:89,  rating:'★★★★½', reviews:182, img:IMG+'bar.jpg',     cta:'Add to Cart'},
+    {id:'bites',   name:'Protein Bites',  meta:'30 GMS (Pack of 10)',      price:45,  rating:'★★★★★', reviews:210, img:IMG+'bites.jpg',   cta:'Add to Cart'},
+    {id:'30for30', name:'30 for 30 Days', meta:'Protein Balls Challenge',  price:950, rating:'★★★★★', reviews:375, img:IMG+'30for30.jpg', tag:'BEST SELLER', cta:'View Details'},
+    {id:'combo',   name:'Custom Combo',   meta:'Build Your Box',           price:199, priceLabel:'From ₹199', rating:'★★★★½', reviews:96, img:IMG+'combo.jpg', cta:'Choose Now'},
   ];
 
   const benefits = [
@@ -79,41 +27,45 @@
 
   /* ---------- render products ---------- */
   const grid = document.getElementById('productGrid');
-  const svgMap = {};
+  const imgMap = {};
   products.forEach(p => {
-    svgMap[p.id] = p.svg(p.id);
+    imgMap[p.id] = p.img;
     const el = document.createElement('article');
     el.className = 'product reveal';
     el.innerHTML = `
       <div class="product__media">
         ${p.tag ? `<span class="product__tag">${p.tag}</span>` : ''}
-        <button class="product__wish" aria-label="Add to wishlist">♡</button>
-        ${svgMap[p.id]}
+        <button class="product__wish" aria-label="Add ${p.name} to wishlist" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A4.8 4.8 0 0 1 12 6a4.8 4.8 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        </button>
+        <img class="product__img" src="${p.img}" alt="${p.name} — ${p.meta}" loading="lazy" width="600" height="600" />
       </div>
       <div class="product__body">
         <h3 class="product__name">${p.name}</h3>
         <p class="product__meta">${p.meta}</p>
-        <p class="stars">${p.rating} <small>(${p.reviews})</small></p>
-        <p class="product__price">${p.priceLabel || '₹'+p.price} ${p.priceLabel?'':''}</p>
+        <p class="stars" aria-label="${p.reviews} reviews">${p.rating} <small>(${p.reviews})</small></p>
+        <p class="product__price">${p.priceLabel || '₹'+p.price}</p>
         <button class="product__btn" data-add="${p.id}">${p.cta}</button>
       </div>`;
     grid.appendChild(el);
   });
-  document.querySelectorAll('.product__wish').forEach(b=>b.addEventListener('click',()=>{b.classList.toggle('on');b.textContent=b.classList.contains('on')?'♥':'♡';}));
+  document.querySelectorAll('.product__wish').forEach(b=>b.addEventListener('click',()=>{
+    const on=b.classList.toggle('on'); b.setAttribute('aria-pressed', on?'true':'false');
+  }));
 
   /* ---------- render benefits ---------- */
   const bGrid = document.getElementById('benefitGrid');
   benefits.forEach(b => {
     const el = document.createElement('div');
     el.className = 'benefit reveal';
-    el.innerHTML = `<span class="benefit__emoji">${b.e}</span><h3>${b.n}</h3><p>${b.d}</p>`;
+    el.innerHTML = `<span class="benefit__emoji" aria-hidden="true">${b.e}</span><h3>${b.n}</h3><p>${b.d}</p>`;
     bGrid.appendChild(el);
   });
 
   /* ---------- render ingredients marquee (doubled for loop) ---------- */
   const ingTrack = document.getElementById('ingTrack');
   const emojiFor = {Cashews:'🥜',Almonds:'🌰',Dates:'🌴',"Pumpkin Seeds":'🎃',"Watermelon Seeds":'🍉',"Chia Seeds":'🌱',"Flax Seeds":'🫘',"Halim Seeds":'🌿',"Black Raisins":'🍇',Cranberry:'🔴',Saffron:'🌸',"Desi Ghee":'🍯',"Sunflower Seeds":'🌻',"Sesame Seeds":'⚪',"Basil Seeds":'⚫'};
-  const chips = ingredients.map(i=>`<div class="ing-chip"><span>${emojiFor[i]||'•'}</span>${i}</div>`).join('');
+  const chips = ingredients.map(i=>`<div class="ing-chip"><span aria-hidden="true">${emojiFor[i]||'•'}</span>${i}</div>`).join('');
   ingTrack.innerHTML = chips + chips;
 
   /* ---------- cart ---------- */
@@ -133,13 +85,13 @@
     const ids = Object.keys(cart);
     let count=0, total=0;
     if(!ids.length){
-      cartItems.innerHTML = `<div class="cart-empty"><span>🛒</span>Your cart is empty.<br/>Add some wholesome treats!</div>`;
+      cartItems.innerHTML = `<div class="cart-empty"><span aria-hidden="true">🛒</span>Your cart is empty.<br/>Add some wholesome treats!</div>`;
     } else {
       cartItems.innerHTML = ids.map(id=>{
         const p = productById[id]; const q = cart[id];
         count+=q; total+=p.price*q;
         return `<div class="cart-item">
-          <div class="cart-item__thumb">${svgMap[id]}</div>
+          <div class="cart-item__thumb"><img src="${imgMap[id]}" alt="${p.name}" width="52" height="52" loading="lazy"/></div>
           <div class="cart-item__info">
             <div class="cart-item__name">${p.name}</div>
             <div class="cart-item__price">₹${p.price}</div>
