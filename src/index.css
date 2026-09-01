@@ -210,6 +210,15 @@ th.num{text-align:right}
 .lp__mini-kpi b{display:block;font-size:1rem;margin-top:.2rem}
 .lp__mini-chart{display:flex;align-items:flex-end;gap:8px;height:120px;padding:.4rem;background:var(--bg);border-radius:10px}
 .lp__mini-chart span{flex:1;border-radius:5px 5px 0 0;background:linear-gradient(180deg,var(--brand-500),var(--brand))}
+.lp__trust{padding:2rem 0;border-bottom:1px solid var(--line)}
+.lp__trust-label{text-align:center;color:var(--muted);font-size:.82rem;margin-bottom:1rem}
+.lp__trust-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:1.4rem 2.6rem;align-items:center}
+.lp__trust-logos span{font-weight:800;letter-spacing:.04em;color:var(--muted);opacity:.7;font-size:1.05rem}
+.lp__stats{background:var(--bg)}
+.lp__stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:2.4rem 0}
+.lp__stat{text-align:center}
+.lp__stat b{display:block;font-size:clamp(1.6rem,3vw,2.2rem);color:var(--brand);letter-spacing:-.02em}
+.lp__stat span{color:var(--muted);font-size:.85rem}
 .lp__section{padding:4.5rem 0}
 .lp__head{text-align:center;max-width:60ch;margin:0 auto 2.6rem}
 .lp__head h2{font-size:clamp(1.7rem,3.6vw,2.4rem);letter-spacing:-.01em;margin-bottom:.5rem}
@@ -256,11 +265,19 @@ tbody tr:hover .row-actions{opacity:1}
 .form-actions{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1.4rem;padding-top:1.1rem;border-top:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){.modal{animation:none}}
 
+/* charts never squish below a usable height/width */
+.card__pad .recharts-responsive-container{min-width:0!important}
+
 /* ---------- responsive ---------- */
-@media(max-width:1200px){ .kpi-row{grid-template-columns:repeat(3,1fr)} }
+@media(max-width:1400px){ .kpi-row{grid-template-columns:repeat(4,1fr)} }
+@media(max-width:1200px){
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+  .lp__modules{grid-template-columns:repeat(3,1fr)}
+}
 @media(max-width:1100px){
   .cols-4{grid-template-columns:repeat(2,1fr)}
   .split{grid-template-columns:1.4fr 1fr}
+  .lp__why-grid{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:900px){
   .app{grid-template-columns:1fr}
@@ -302,6 +319,7 @@ tbody tr:hover .row-actions{opacity:1}
   .page-head h1{font-size:1.3rem}
   .lp__modules{grid-template-columns:1fr}
   .lp__cta-inner{flex-direction:column;align-items:flex-start}
+  .lp__stats-grid{grid-template-columns:repeat(2,1fr);gap:1.4rem}
   .form-grid{grid-template-columns:1fr}
   .modal-overlay{padding:2vh .8rem 1rem}
 }

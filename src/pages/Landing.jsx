@@ -61,6 +61,25 @@ export default function Landing({ authed }) {
         </div>
       </section>
 
+      <section className="lp__trust">
+        <div className="lp__wrap">
+          <p className="lp__trust-label">Trusted by growing businesses across India</p>
+          <div className="lp__trust-logos">
+            {['NORTHWIND', 'Zenith', 'FitZone', 'PRANA', 'Verve Co', 'Skyline'].map((n) => (
+              <span key={n}>{n}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="lp__stats">
+        <div className="lp__wrap lp__stats-grid">
+          {[['10+', 'Modules'], ['99.9%', 'Uptime'], ['5,000+', 'Businesses'], ['24/7', 'Support']].map(([v, l]) => (
+            <div key={l} className="lp__stat"><b>{v}</b><span>{l}</span></div>
+          ))}
+        </div>
+      </section>
+
       <section className="lp__section" id="modules">
         <div className="lp__wrap">
           <div className="lp__head">
