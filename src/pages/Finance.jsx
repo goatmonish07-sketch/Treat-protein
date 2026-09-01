@@ -3,23 +3,27 @@ import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 import { Plus } from 'lucide-react';
-import { PageHeader, Badge, StatCard } from '../components/ui.jsx';
-import { invoices, revenueTrend, currency } from '../lib/data.js';
+import { PageHeader, Badge, StatCard, RowActions, useCrud } from '../components/ui.jsx';
+import EntityModal from '../components/EntityModal.jsx';
+import { useCollection } from '../lib/store.jsx';
+import { revenueTrend, currency } from '../lib/data.js';
 
 const tabs = ['All', 'Receivable', 'Payable'];
 
 export default function Finance() {
+  const { items, remove } = useCollection('invoices');
+  const crud = useCrud();
   const [tab, setTab] = useState('All');
-  const rows = useMemo(() => invoices.filter((i) => tab === 'All' || i.type === tab), [tab]);
+  const rows = useMemo(() => items.filter((i) => tab === 'All' || i.type === tab), [items, tab]);
 
-  const receivable = invoices.filter((i) => i.type === 'Receivable' && i.status !== 'Paid').reduce((s, i) => s + i.amount, 0);
-  const payable = invoices.filter((i) => i.type === 'Payable' && i.status !== 'Paid').reduce((s, i) => s + i.amount, 0);
-  const overdue = invoices.filter((i) => i.status === 'Overdue').reduce((s, i) => s + i.amount, 0);
+  const receivable = items.filter((i) => i.type === 'Receivable' && i.status !== 'Paid').reduce((s, i) => s + i.amount, 0);
+  const payable = items.filter((i) => i.type === 'Payable' && i.status !== 'Paid').reduce((s, i) => s + i.amount, 0);
+  const overdue = items.filter((i) => i.status === 'Overdue').reduce((s, i) => s + i.amount, 0);
 
   return (
     <>
       <PageHeader crumb="Finance / Overview" title="Finance" subtitle="Accounting, receivables, payables and cash position">
-        <button className="btn btn--primary btn--sm"><Plus size={15} /> <span>New invoice</span></button>
+        <button className="btn btn--primary btn--sm" onClick={crud.openCreate}><Plus size={15} /> <span>New invoice</span></button>
       </PageHeader>
 
       <div className="grid cols-3">
@@ -68,7 +72,7 @@ export default function Finance() {
         <div className="table-wrap">
           <table>
             <thead>
-              <tr><th>Document</th><th>Party</th><th>Type</th><th>Due date</th><th className="num">Amount</th><th>Status</th></tr>
+              <tr><th>Document</th><th>Party</th><th>Type</th><th>Due date</th><th className="num">Amount</th><th>Status</th><th></th></tr>
             </thead>
             <tbody>
               {rows.map((i) => (
@@ -79,12 +83,15 @@ export default function Finance() {
                   <td className="cell-sub">{i.due}</td>
                   <td className="num">{currency(i.amount)}</td>
                   <td><Badge>{i.status}</Badge></td>
+                  <td><RowActions name={i.id} onEdit={() => crud.openEdit(i)} onDelete={() => remove(i.id)} /></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      {crud.modal && <EntityModal collection="invoices" editing={crud.modal.editing} onClose={crud.close} />}
     </>
   );
 }

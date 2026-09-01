@@ -1,16 +1,20 @@
 import { Plus } from 'lucide-react';
-import { PageHeader, Badge, StatCard } from '../components/ui.jsx';
-import { productionOrders } from '../lib/data.js';
+import { PageHeader, Badge, StatCard, RowActions, useCrud } from '../components/ui.jsx';
+import EntityModal from '../components/EntityModal.jsx';
+import { useCollection } from '../lib/store.jsx';
 
 export default function Production() {
-  const inProgress = productionOrders.filter((m) => m.status === 'In progress').length;
-  const planned = productionOrders.filter((m) => m.status === 'Planned').length;
-  const units = productionOrders.reduce((s, m) => s + m.qty, 0);
+  const { items, remove } = useCollection('productionOrders');
+  const crud = useCrud();
+
+  const inProgress = items.filter((m) => m.status === 'In progress').length;
+  const planned = items.filter((m) => m.status === 'Planned').length;
+  const units = items.reduce((s, m) => s + m.qty, 0);
 
   return (
     <>
       <PageHeader crumb="Operations / Production" title="Production" subtitle="Manufacturing and work orders">
-        <button className="btn btn--primary btn--sm"><Plus size={15} /> <span>New work order</span></button>
+        <button className="btn btn--primary btn--sm" onClick={crud.openCreate}><Plus size={15} /> <span>New work order</span></button>
       </PageHeader>
 
       <div className="grid cols-3">
@@ -24,11 +28,11 @@ export default function Production() {
         <div className="table-wrap">
           <table>
             <thead>
-              <tr><th>Order</th><th>Product</th><th className="num">Qty</th><th>Progress</th><th>Due</th><th>Status</th></tr>
+              <tr><th>Order</th><th>Product</th><th className="num">Qty</th><th>Progress</th><th>Due</th><th>Status</th><th></th></tr>
             </thead>
             <tbody>
-              {productionOrders.map((m) => {
-                const pct = Math.round((m.done / m.qty) * 100);
+              {items.map((m) => {
+                const pct = m.qty ? Math.round((m.done / m.qty) * 100) : 0;
                 return (
                   <tr key={m.id}>
                     <td className="cell-strong">{m.id}</td>
@@ -42,6 +46,7 @@ export default function Production() {
                     </td>
                     <td className="cell-sub">{m.due}</td>
                     <td><Badge>{m.status}</Badge></td>
+                    <td><RowActions name={m.id} onEdit={() => crud.openEdit(m)} onDelete={() => remove(m.id)} /></td>
                   </tr>
                 );
               })}
@@ -49,6 +54,8 @@ export default function Production() {
           </table>
         </div>
       </div>
+
+      {crud.modal && <EntityModal collection="productionOrders" editing={crud.modal.editing} onClose={crud.close} />}
     </>
   );
 }

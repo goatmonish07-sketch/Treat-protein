@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import {
   TrendingUp, TrendingDown, Wallet, ShoppingCart, Users, AlertTriangle,
-  Receipt, LineChart, Truck, IdCard, Box,
+  Receipt, LineChart, Truck, IdCard, Box, Pencil, Trash2,
 } from 'lucide-react';
 import { currency, compact } from '../lib/data.js';
 
@@ -63,4 +64,30 @@ export function Badge({ children }) {
 
 export function initials(name) {
   return name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+}
+
+// Edit + delete buttons for a table row. `name` is used in the delete confirm.
+export function RowActions({ onEdit, onDelete, name = 'this record' }) {
+  return (
+    <div className="row-actions">
+      <button className="iconbtn iconbtn--xs" aria-label={'Edit ' + name} title="Edit" onClick={onEdit}>
+        <Pencil size={15} />
+      </button>
+      <button className="iconbtn iconbtn--xs iconbtn--danger" aria-label={'Delete ' + name} title="Delete"
+        onClick={() => { if (window.confirm(`Delete ${name}? This cannot be undone.`)) onDelete(); }}>
+        <Trash2 size={15} />
+      </button>
+    </div>
+  );
+}
+
+// Small hook to manage add/edit modal state for a page.
+export function useCrud() {
+  const [modal, setModal] = useState(null); // null | { editing: item|null }
+  return {
+    modal,
+    openCreate: () => setModal({ editing: null }),
+    openEdit: (item) => setModal({ editing: item }),
+    close: () => setModal(null),
+  };
 }

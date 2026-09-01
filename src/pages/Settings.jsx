@@ -1,8 +1,10 @@
-import { LogOut, Building2, Bell, ShieldCheck } from 'lucide-react';
+import { LogOut, Building2, Bell, ShieldCheck, RotateCcw } from 'lucide-react';
 import { PageHeader } from '../components/ui.jsx';
+import { useData } from '../lib/store.jsx';
 import { company } from '../lib/data.js';
 
 export default function Settings({ onLogout }) {
+  const { reset } = useData();
   return (
     <>
       <PageHeader crumb="Settings" title="Settings" subtitle="Workspace preferences and account" />
@@ -47,7 +49,13 @@ export default function Settings({ onLogout }) {
             <div className="cell-strong">Signed in as Priya Sharma</div>
             <small className="muted">admin@crazyyoga.co · Operations Head</small>
           </div>
-          <button className="btn btn--ghost btn--sm" onClick={onLogout}><LogOut size={15} /> Sign out</button>
+          <div style={{ display: 'flex', gap: '.6rem', flexWrap: 'wrap' }}>
+            <button className="btn btn--ghost btn--sm"
+              onClick={() => { if (window.confirm('Reset all demo data back to the sample records? Your added/edited records will be lost.')) reset(); }}>
+              <RotateCcw size={15} /> Reset demo data
+            </button>
+            <button className="btn btn--ghost btn--sm" onClick={onLogout}><LogOut size={15} /> Sign out</button>
+          </div>
         </div>
       </div>
     </>
