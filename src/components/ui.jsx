@@ -1,12 +1,19 @@
-import { TrendingUp, TrendingDown, Wallet, ShoppingCart, Users, AlertTriangle } from 'lucide-react';
-import { currency } from '../lib/data.js';
+import {
+  TrendingUp, TrendingDown, Wallet, ShoppingCart, Users, AlertTriangle,
+  Receipt, LineChart, Truck, IdCard, Box,
+} from 'lucide-react';
+import { currency, compact } from '../lib/data.js';
 
-const icons = { wallet: Wallet, cart: ShoppingCart, users: Users, alert: AlertTriangle };
+const icons = {
+  wallet: Wallet, cart: ShoppingCart, users: Users, alert: AlertTriangle,
+  expense: Receipt, trend: LineChart, truck: Truck, badge: IdCard, box: Box,
+};
 const tones = {
   brand:  { bg: 'var(--brand-050)',  fg: 'var(--brand)' },
   accent: { bg: 'var(--accent-050)', fg: 'var(--accent)' },
   info:   { bg: 'var(--info-bg)',    fg: 'var(--info)' },
   warn:   { bg: 'var(--warn-bg)',    fg: 'var(--warn)' },
+  danger: { bg: 'var(--danger-bg)',  fg: 'var(--danger)' },
 };
 
 export function PageHeader({ crumb, title, subtitle, children }) {
@@ -25,24 +32,29 @@ export function PageHeader({ crumb, title, subtitle, children }) {
 export function StatCard({ label, value, delta, up, fmt, icon, tone = 'brand' }) {
   const Icon = icons[icon] || Wallet;
   const t = tones[tone] || tones.brand;
-  const shown = fmt === 'money' ? currency(value) : Number(value).toLocaleString('en-IN');
+  const shown = fmt === 'num' ? Number(value).toLocaleString('en-IN')
+    : fmt === 'money' ? currency(value) : compact(value);
   return (
     <div className="card card__pad stat">
       <span className="stat__ic" style={{ background: t.bg, color: t.fg }}><Icon size={20} /></span>
       <div className="stat__label">{label}</div>
       <div className="stat__value">{shown}</div>
-      <span className={'stat__delta ' + (up ? 'up' : 'down')}>
-        {up ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
-        {up ? `+${delta}% vs last month` : `+${delta} this week`}
-      </span>
+      {delta != null && (
+        <span className={'stat__delta ' + (up ? 'up' : 'down')}>
+          {up ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
+          {up ? '+' : ''}{delta}% <span className="muted" style={{ fontWeight: 500 }}>this week</span>
+        </span>
+      )}
     </div>
   );
 }
 
 const badgeMap = {
-  'In stock': 'b-ok', 'Paid': 'b-ok', 'Fulfilled': 'b-info', 'Active': 'b-ok',
+  'In stock': 'b-ok', 'Paid': 'b-ok', 'Fulfilled': 'b-info', 'Active': 'b-ok', 'Completed': 'b-ok',
+  'Received': 'b-ok', 'On track': 'b-ok', 'In use': 'b-ok', 'Approved': 'b-info', 'In progress': 'b-info',
   'Low': 'b-warn', 'Pending': 'b-warn', 'On hold': 'b-warn', 'On leave': 'b-warn', 'Open': 'b-info',
-  'Out of stock': 'b-danger', 'Refunded': 'b-danger', 'Overdue': 'b-danger',
+  'Planned': 'b-muted', 'At risk': 'b-warn', 'Maintenance': 'b-warn',
+  'Out of stock': 'b-danger', 'Refunded': 'b-danger', 'Overdue': 'b-danger', 'Delayed': 'b-danger',
   'Lead': 'b-info',
 };
 export function Badge({ children }) {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar.jsx';
 import Topbar from './Topbar.jsx';
+import BottomNav from './BottomNav.jsx';
 
 export default function Layout() {
   const [navOpen, setNavOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function Layout() {
         <main className="content">
           <Outlet />
         </main>
+        <BottomNav onMenu={() => setNavOpen(true)} />
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ export default function Topbar({ onMenu }) {
         <input placeholder="Search orders, products, customers…" aria-label="Search" />
       </div>
       <div className="topbar__spacer" />
-      <button className="btn btn--primary btn--sm"><Plus size={16} /> New</button>
+      <button className="btn btn--primary btn--sm"><Plus size={16} /> <span>New</span></button>
       <button className="iconbtn" aria-label="Notifications">
         <Bell size={18} /><span className="dot" />
       </button>

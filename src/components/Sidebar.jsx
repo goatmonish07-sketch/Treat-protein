@@ -1,20 +1,25 @@
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, Package, ShoppingCart, Users, UserCog,
-  Receipt, Settings, Sparkles,
+  LayoutDashboard, Wallet, IdCard, Package, ShoppingCart, Truck,
+  Factory, KanbanSquare, Boxes, LineChart, Settings, Sparkles,
 } from 'lucide-react';
 import { company } from '../lib/data.js';
 
 const nav = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/app', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { section: 'Operations' },
-  { to: '/inventory', label: 'Inventory', icon: Package },
-  { to: '/sales', label: 'Sales & Orders', icon: ShoppingCart },
-  { to: '/customers', label: 'Customers', icon: Users },
-  { section: 'Organization' },
-  { to: '/employees', label: 'HR & Employees', icon: UserCog },
-  { to: '/accounting', label: 'Accounting', icon: Receipt },
-  { to: '/settings', label: 'Settings', icon: Settings },
+  { to: '/app/inventory', label: 'Inventory', icon: Package },
+  { to: '/app/sales', label: 'Sales & CRM', icon: ShoppingCart },
+  { to: '/app/purchase', label: 'Purchase', icon: Truck },
+  { to: '/app/production', label: 'Production', icon: Factory },
+  { to: '/app/projects', label: 'Project', icon: KanbanSquare },
+  { to: '/app/assets', label: 'Assets', icon: Boxes },
+  { section: 'Finance & People' },
+  { to: '/app/finance', label: 'Finance', icon: Wallet },
+  { to: '/app/hr', label: 'HR & Payroll', icon: IdCard },
+  { to: '/app/reports', label: 'Reports', icon: LineChart },
+  { section: 'System' },
+  { to: '/app/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function Sidebar({ open, onNavigate }) {
