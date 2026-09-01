@@ -1,9 +1,9 @@
 {
   "name": "crazy-yoga-erp",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Crazy Yoga ERP — a business ERP (inventory, sales, CRM, HR, accounting) built with React + Vite.",
+  "description": "Crazy Yoga ERP — a business ERP (finance, inventory, sales & CRM, purchase, production, projects, assets, HR, reports) built with React + Vite.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
